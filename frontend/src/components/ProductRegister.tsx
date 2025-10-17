@@ -69,6 +69,7 @@ export default function ProductRegister({ setPage, user }: Props) {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
 
+  // 로그인 안 되어 있으면
   if (!user) {
     return (
       <div style={containerStyle}>
@@ -87,10 +88,11 @@ export default function ProductRegister({ setPage, user }: Props) {
     );
   }
 
+  // 카테고리 불러오기
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://15.165.25.115/api/categories");
+        const res = await fetch("http://localhost:8080/api/categories"); // 수정된 URL
         if (res.ok) {
           const data: Category[] = await res.json();
           setCategories(data);
@@ -147,7 +149,7 @@ export default function ProductRegister({ setPage, user }: Props) {
         productStatus: "ACTIVE",
       };
 
-      const response = await fetch("http://15.165.25.115/api/products", {
+      const response = await fetch("http://localhost:8080/api/products", { // 수정된 URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),
