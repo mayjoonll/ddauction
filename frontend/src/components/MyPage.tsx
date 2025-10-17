@@ -51,12 +51,13 @@ export default function MyPage({ setPage, user, setUser }: Props) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ✅ 수정된 정보 저장
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`/api/users/${user.userId}/mypage`, {
+      const res = await fetch(`/api/users`, { // URL을 백엔드와 맞춤
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, userId: user.userId }), // userId 포함
       });
 
       if (res.ok) {
@@ -110,7 +111,7 @@ export default function MyPage({ setPage, user, setUser }: Props) {
     setShowSelling(!showSelling);
   };
 
-  // 카테고리 ID -> 이름 매핑 함수
+  // 카테고리 ID -> 이름 매핑
   const getCategoryName = (categoryId?: number) => {
     return categories.find(c => c.categoryId === categoryId)?.name || "없음";
   };

@@ -58,6 +58,8 @@ export default function Signup({ setPage }: Props) {
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {
+    setError('');
+
     if (!form.realName || !form.nickName || !form.email || !form.password || !form.passwordConfirm || !form.phone) {
       setError('모든 필드를 입력해주세요.');
       return;
@@ -69,7 +71,7 @@ export default function Signup({ setPage }: Props) {
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -85,9 +87,11 @@ export default function Signup({ setPage }: Props) {
         alert('회원가입 성공!');
         setPage('login');
       } else {
-        setError('회원가입 실패');
+        const data = await response.json();
+        setError(data.message || '회원가입 실패');
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       setError('서버 연결 실패');
     }
   };

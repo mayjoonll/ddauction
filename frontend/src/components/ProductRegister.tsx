@@ -90,7 +90,7 @@ export default function ProductRegister({ setPage, user }: Props) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://15.165.25.115/api/categories");
+        const res = await fetch("http://15.165.25.115/api/categories"); // 백엔드 포트 수정
         if (res.ok) {
           const data: Category[] = await res.json();
           setCategories(data);
@@ -106,7 +106,6 @@ export default function ProductRegister({ setPage, user }: Props) {
     };
     fetchCategories();
   }, []);
-  console.log("현재 categories state:", categories);
 
   const handleSubmit = async () => {
     setError("");
@@ -118,12 +117,12 @@ export default function ProductRegister({ setPage, user }: Props) {
       setError("로그인 정보가 없습니다.");
       return;
     }
-    
-  let price = form.price;
-  if (!price || price <= 0) {
-    setError("시작 가격을 입력해주세요.");
-    return;
-  }
+
+    let price = form.price;
+    if (!price || price <= 0) {
+      setError("시작 가격을 입력해주세요.");
+      return;
+    }
 
     let auctionEndTime = form.auctionEndTime;
     if (form.oneMinuteAuction) {
@@ -147,7 +146,7 @@ export default function ProductRegister({ setPage, user }: Props) {
         productStatus: "ACTIVE",
       };
 
-      const response = await fetch("http://15.165.25.115/api/products", {
+      const response = await fetch("http://15.165.25.115/api/products", { // 백엔드 포트 수정
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),
