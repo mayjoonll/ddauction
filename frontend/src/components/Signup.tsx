@@ -58,19 +58,18 @@ export default function Signup({ setPage }: Props) {
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {
-    // 필드 검증
     if (!form.realName || !form.nickName || !form.email || !form.password || !form.passwordConfirm || !form.phone) {
       setError('모든 필드를 입력해주세요.');
       return;
     }
+
     if (form.password !== form.passwordConfirm) {
       setError('비밀번호가 일치하지 않습니다.');
       return;
     }
 
     try {
-      // 회원가입 요청: 통합 DTO 반영
-      const response = await fetch('/api/users/signup', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -84,13 +83,11 @@ export default function Signup({ setPage }: Props) {
 
       if (response.ok) {
         alert('회원가입 성공!');
-        setPage('login'); // 성공 시 로그인 페이지 이동
+        setPage('login');
       } else {
-        const data = await response.json();
-        setError(data?.message || '회원가입 실패');
+        setError('회원가입 실패');
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError('서버 연결 실패');
     }
   };

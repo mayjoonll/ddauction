@@ -58,7 +58,7 @@ export default function Login({ setPage, setUser }: Props) {
     }
 
     try {
-      const response = await fetch('/api/users/login', { // <-- 경로 수정
+      const response = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -69,8 +69,7 @@ export default function Login({ setPage, setUser }: Props) {
         setUser(data);
         setPage('main');
       } else {
-        const errData = await response.json();
-        setError(errData.message || '로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
+        setError('로그인 실패: 이메일 또는 비밀번호를 확인하세요.');
       }
     } catch {
       setError('서버 연결 실패');
@@ -99,10 +98,7 @@ export default function Login({ setPage, setUser }: Props) {
 
         {error && <p style={{ color: '#ff4444', marginBottom: '10px' }}>{error}</p>}
 
-        <button
-          onClick={handleSubmit}
-          style={{ ...buttonStyle, width: '100%', marginTop: '20px' }}
-        >
+        <button onClick={handleSubmit} style={{ ...buttonStyle, width: '100%', marginTop: '20px' }}>
           로그인
         </button>
 
